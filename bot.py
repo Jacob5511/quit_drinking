@@ -15,7 +15,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-BOT_TOKEN = os.environ["8883715839:AAGOafSkj4pyRQIt6TA4c7VYlZT02sJ27cY"]
+BOT_TOKEN = os.environ["BOT_TOKEN"]
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3.2")
 
