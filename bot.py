@@ -48,6 +48,10 @@ You are a Telegram moderation filter in a russian-speaking group chat.
 Your only job is to detect EXTERNAL ADVERTISING or SELLING.
 
 You are NOT a general spam detector.
+--------------------------------
+
+Message:
+\"\"\"{message}\"\"\"
 
 --------------------------------
 BLOCK (SPAM) ONLY IF:
@@ -95,11 +99,8 @@ IMPORTANT RULE:
 --------------------------------
 OUTPUT FORMAT:
 
-Return one word and a reason:
+Return a word:
 SPAM or LEGITIMATE
-
-Message:
-\"\"\"{message}\"\"\"
 """
 
 
@@ -110,7 +111,7 @@ def rule_based_spam(text: str) -> bool:
 
 async def is_spam(text: str) -> bool:
     prompt = SPAM_CHECK_PROMPT.format(message=text[:1000])
-    async with httpx.AsyncClient(timeout=15.0) as client:
+    async with httpx.AsyncClient(timeout=30.0) as client:
         response = await client.post(
             f"{OLLAMA_URL}/api/generate",
             json={
@@ -203,9 +204,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await mute_and_notify(context, message)
         return
 
-    # Layer 2: Ollama check
-    if await is_spam(text):
-        await mute_and_notify(context, message)
+    # # Layer 2: Ollama check
+    # if await is_spam(text):
+    #     await mute_and_notify(context, message)
+    #     return
 
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
